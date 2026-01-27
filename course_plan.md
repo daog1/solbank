@@ -46,14 +46,18 @@
 ### 4. 实战案例：在 daog1/solbank 中使用 SurfPool 特性
 - **项目背景**: 介绍 `daog1/solbank` 项目及其测试需求。
 - **SurfPool 核心特性**:
-  - **设置账户数据**: 如何使用 SurfPool 的功能在测试前预设账户状态（如用户余额、程序数据等）。
-  - **设置 Token 数据**: 如何预设 SPL Token 账户的状态，包括代币种类、数量等。
-  - **时间旅行 (Time Travel)**: 如何利用 SurfPool 的时间旅行功能，模拟不同的时间点或区块高度，测试与时间相关的逻辑（如锁仓、解锁、利息计算等）。
+  - **设置账户数据**: 如何使用 SurfPool 的作弊码功能在测试前预设账户状态（如用户余额、程序数据等）。通过 `surfnet_setAccount` 作弊码，可以直接设置账户的 lamports、数据和所有者信息。
+  - **设置 Token 数据**: 如何使用 `surfnet_setTokenAccount` 作弊码预设 SPL Token 账户的状态，包括代币种类、数量等。这在测试代币相关功能时特别有用。
+  - **时间旅行 (Time Travel)**: 如何利用 SurfPool 的时间旅行功能，通过其 Web UI 界面模拟不同的时间点或区块高度，测试与时间相关的逻辑（如锁仓、解锁、利息计算等）。
 - **运行测试**:
-  - **启动 SurfPool**: 如何使用 `just` 命令（例如 `just surfpool-up`）启动本地测试环境。
-  - **执行测试**: 如何运行 `just test` 或类似的 `just` 命令来执行测试套件。
+  - **启动 SurfPool**: 使用 `just run-surfpool` 或 `surfpool start` 命令启动本地测试环境。
+  - **执行测试**: 使用 `just test-with-surfpool-deploy` 命令启动 SurfPool 并自动部署程序后运行测试，或使用 `just test-local-surfpool` 在已启动的 SurfPool 环境中运行测试。
   - **观察结果**: 分析测试输出，验证程序行为是否符合预期。
-- **优势体现**: 对比传统 `solana-test-validator`，展示 SurfPool 在模拟复杂状态和时间相关逻辑方面的强大能力。
+- **优势体现**: 对比传统 `solana-test-validator`，展示 SurfPool 在模拟复杂状态和时间相关逻辑方面的强大能力，以及通过作弊码快速设置测试状态的便利性。
+- **实战脚本示例**:
+  - **设置 USDT 代币账户**: 通过 `just setup-usdt-account <amount>` 命令预设用户的 USDT 代币账户余额。
+  - **存款和取款测试**: 使用 `just deposit-usdt` 和 `just withdraw-usdt` 命令测试代币存取功能。
+  - **自定义代币操作**: 使用 `just deposit-token <mint_address>` 和 `just withdraw-token <mint_address>` 命令测试任意 SPL 代币的存取功能。
 
 ### 5. 总结与展望
 - **回顾要点**: 重申三种工具的核心价值和应用场景。
