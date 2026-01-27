@@ -11,6 +11,8 @@ test-local-surfpool:
 test-with-surfpool-deploy:
     surfpool run -- anchor test
 
+run-surfpool:
+    surfpool start
 # Generate a new keypair and output private key in base58
 generate-keypair:
     npx ts-node scripts/generate-keypair.ts
@@ -44,3 +46,14 @@ setup-usdt-account AMOUNT:
     #!/usr/bin/env zsh
     export ANCHOR_PROVIDER_URL=http://localhost:8899
     npx ts-node scripts/setup-usdt-account.ts {{AMOUNT}}
+
+deposit-usdt MINT:
+    #!/usr/bin/env zsh
+    export ANCHOR_PROVIDER_URL=http://localhost:8899
+    npx ts-node scripts/deposit-token.ts Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB
+
+# Run withdraw token script (requires mint address as argument)
+withdraw-usdt MINT:
+    #!/usr/bin/env zsh
+    export ANCHOR_PROVIDER_URL=http://localhost:8899
+    npx ts-node scripts/withdraw-token.ts Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB
