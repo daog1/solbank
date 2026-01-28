@@ -55,20 +55,41 @@ A Solana program implementing a simple banking system with SOL and SPL token sup
 Use the Justfile for easy testing:
 
 ```bash
-# Run tests
+# Run tests without deploying, using local Surfpool RPC
 just test-local-surfpool
 
-# Create a test mint and fund user
+# Start Surfpool and run tests (deploys automatically)
+just test-with-surfpool-deploy
+
+# Start Surfpool (uses MAIN_RPC environment variable)
+just run-surfpool
+
+# Generate a new keypair and output private key in base58
+just generate-keypair
+
+# Create a test mint
 just create-mint
 
-# Deposit tokens
+# Deposit tokens (requires mint address as argument)
 just deposit-token <mint-address>
 
-# Withdraw tokens (after cooldown)
+# Withdraw tokens (requires mint address as argument)
 just withdraw-token <mint-address>
 
-# Setup USDT balance
+# Setup USDT balance to 1e12
 just setup-usdt-balance
+
+# Setup USDT account with custom balance (amount in lamports, default 1e9)
+just setup-usdt-account <amount>
+
+# Deposit USDT
+just deposit-usdt
+
+# Withdraw USDT
+just withdraw-usdt
+
+# Show help information
+just help
 ```
 
 ### Wallet Roles

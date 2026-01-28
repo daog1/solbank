@@ -11,8 +11,10 @@ test-local-surfpool:
 test-with-surfpool-deploy:
     surfpool run -- anchor test
 
+#@surfpool start -u {{env_var("MAIN_RPC")}}
 run-surfpool:
     @surfpool start -u {{env_var("MAIN_RPC")}}
+
 
 
 # Generate a new keypair and output private key in base58
