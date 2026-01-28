@@ -24,6 +24,7 @@ async function main() {
   );
 
   console.log(`User address: ${userKeypair.publicKey.toBase58()}`);
+  console.log(`Mint address: ${mint.toBase58()} `);
 
   // Airdrop SOL to user if needed
   const userBalance = await connection.getBalance(userKeypair.publicKey);
@@ -43,13 +44,18 @@ async function main() {
   anchor.setProvider(provider);
 
   // Get or create user's USDT ATA
-  const userTokenAccount = await getOrCreateAssociatedTokenAccount(
+  /*const userTokenAccount = await getOrCreateAssociatedTokenAccount(
     provider.connection,
     userKeypair, // payer
     mint,
     userKeypair.publicKey
-  );
-  console.log("User USDT ATA:", userTokenAccount.address.toBase58());
+  );*/
+  const userTokenAccount = anchor.utils.token.associatedAddress({
+    mint,
+    owner: userKeypair.publicKey,
+  });
+  console.log("ATA address:", userTokenAccount.toBase58());
+  console.log("User USDT ATA:", userTokenAccount.toBase58());
 
   // Set balance to 1e12 using Surfpool cheatcode
   const amount = 2e9; // 1e12 as number
@@ -66,10 +72,7 @@ async function main() {
   console.log(`Set USDT balance to ${amount} for user`);
 
   // Check balance
-  const accountInfo = await getAccount(
-    provider.connection,
-    userTokenAccount.address
-  );
+  const accountInfo = await getAccount(provider.connection, userTokenAccount);
   console.log(`User USDT balance: ${accountInfo.amount} (raw)`);
 }
 

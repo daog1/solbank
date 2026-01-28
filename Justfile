@@ -1,5 +1,5 @@
 # Justfile for Solana development with Surfpool
-
+set dotenv-load := true
 # Run tests without deploying, using local Surfpool RPC
 test-local-surfpool:
     # Assume Surfpool is running locally on default port 8899
@@ -12,7 +12,9 @@ test-with-surfpool-deploy:
     surfpool run -- anchor test
 
 run-surfpool:
-    surfpool start
+    @surfpool start -u {{env_var("MAIN_RPC")}}
+
+
 # Generate a new keypair and output private key in base58
 generate-keypair:
     npx ts-node scripts/generate-keypair.ts
@@ -47,13 +49,20 @@ setup-usdt-account AMOUNT:
     export ANCHOR_PROVIDER_URL=http://localhost:8899
     npx ts-node scripts/setup-usdt-account.ts {{AMOUNT}}
 
-deposit-usdt MINT:
+deposit-usdt:
     #!/usr/bin/env zsh
     export ANCHOR_PROVIDER_URL=http://localhost:8899
-    npx ts-node scripts/deposit-token.ts Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB
+    npx ts-node scripts/deposit-token.ts Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB 10000000
 
 # Run withdraw token script (requires mint address as argument)
-withdraw-usdt MINT:
+withdraw-usdt:
     #!/usr/bin/env zsh
     export ANCHOR_PROVIDER_URL=http://localhost:8899
-    npx ts-node scripts/withdraw-token.ts Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB
+    npx ts-node scripts/withdraw-token.ts Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB 5000000
+
+help:
+    @echo "just run-surfpool"
+    @echo "just test-local-surfpool init"
+    @echo "just setup-usdt-balance"
+    @echo "just deposit-usdt"
+    @echo "just withdraw-usdt"

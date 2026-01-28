@@ -18,6 +18,7 @@ async function main() {
     console.error("Usage: ts-node scripts/withdraw-token.ts <mint-address>");
     process.exit(1);
   }
+  const amount = process.argv[3];
 
   // Load wallets from .env
   const userPrivateKey = process.env.USER_PRIVATE_KEY!;
@@ -73,9 +74,6 @@ async function main() {
     anchor.utils.token.ASSOCIATED_PROGRAM_ID
   )[0];
 
-  // Withdraw 300000000 (0.3 tokens)
-  const amount = 300000000;
-
   // Print token balance before
   let vaultTokenBalanceBefore = 0;
   try {
@@ -88,7 +86,7 @@ async function main() {
     console.log("Vault token account does not exist");
   }
   console.log(`Vault token balance before: ${vaultTokenBalanceBefore}`);
-
+  console.log("Withdraw token amount:", amount);
   const withdrawTx = await (
     program.methods.withdrawToken(new anchor.BN(amount)) as any
   )
