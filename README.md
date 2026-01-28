@@ -233,6 +233,39 @@ await connection._rpcRequest('surfnet_resumeClock', []);
 - Validate all account ownership and authorities
 - Test edge cases with account manipulation tools
 
+## Pinocchio Integration Example
+
+Here's an example of how to call the "call" action with "svm::process_instructions" using Pinocchio:
+
+```toml
+action "call" "svm::process_instructions" {
+	signers = [signer.deployer]
+    instruction {
+        program_id = "E4Ewh6dst6ZDW1jPpMCSbvTCTwYapuUyTQaFj3vQGgUY"
+        data ="0x0c05000000000000"
+        account {
+            public_key = signer.deployer.address
+            is_writable = true
+            is_signer = true
+        }
+        account  {
+            public_key = "Andy1111111111111111111111111111111111111111"
+            is_writable = true
+        }
+        account {
+            public_key = svm::system_program_id()
+        }
+    }
+}
+
+```
+
+This example demonstrates how to interact with SVM (Solana Virtual Machine) instructions using Pinocchio's action system.
+
+For more information about the process_instructions action, see the [Surfpool documentation](https://docs.surfpool.run/iac/svm/actions#process_instructions).
+
+This functionality was introduced in [PR #295](https://github.com/txtx/txtx/pull/295) for the txtx project.
+
 ## License
 
 MIT

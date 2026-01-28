@@ -233,6 +233,39 @@ await connection._rpcRequest('surfnet_resumeClock', []);
 - 验证所有账户所有权和权限
 - 使用账户操作工具测试边缘情况
 
+## Pinocchio 集成示例
+
+以下是如何使用 Pinocchio 调用带有 "svm::process_instructions" 的 "call" 操作的示例：
+
+```toml
+action "call" "svm::process_instructions" {
+	signers = [signer.deployer]
+    instruction {
+        program_id = "E4Ewh6dst6ZDW1jPpMCSbvTCTwYapuUyTQaFj3vQGgUY"
+        data ="0x0c05000000000000"
+        account {
+            public_key = signer.deployer.address
+            is_writable = true
+            is_signer = true
+        }
+        account  {
+            public_key = "Andy1111111111111111111111111111111111111111"
+            is_writable = true
+        }
+        account {
+            public_key = svm::system_program_id()
+        }
+    }
+}
+
+```
+
+此示例演示了如何使用 Pinocchio 的操作系统与 SVM（Solana 虚拟机）指令进行交互。
+
+有关 process_instructions 操作的详细信息，请参阅 [Surfpool 文档](https://docs.surfpool.run/iac/svm/actions#process_instructions)。
+
+此功能在 txtx 项目的 [PR #295](https://github.com/txtx/txtx/pull/295) 中引入。
+
 ## 许可证
 
 MIT
