@@ -55,20 +55,41 @@
 使用 Justfile 进行便捷测试：
 
 ```bash
-# 运行测试
+# 运行测试（不部署，使用本地 Surfpool RPC）
 just test-local-surfpool
 
-# 创建测试铸币并为用户注资
+# 启动 Surfpool 并运行测试（自动部署）
+just test-with-surfpool-deploy
+
+# 启动 Surfpool（使用 MAIN_RPC 环境变量）
+just run-surfpool
+
+# 生成密钥对
+just generate-keypair
+
+# 创建测试铸币
 just create-mint
 
-# 存款代币
+# 存款代币（需要铸币地址作为参数）
 just deposit-token <mint-address>
 
-# 取款代币（冷却期后）
+# 取款代币（需要铸币地址作为参数）
 just withdraw-token <mint-address>
 
-# 设置 USDT 余额
+# 设置 USDT 余额至 1e12
 just setup-usdt-balance
+
+# 设置 USDT 账户（自定义余额，单位为 lamports，默认 1e9）
+just setup-usdt-account <amount>
+
+# 存款 USDT
+just deposit-usdt
+
+# 取款 USDT
+just withdraw-usdt
+
+# 显示帮助信息
+just help
 ```
 
 ### 钱包角色
@@ -120,23 +141,23 @@ just test-local-surfpool
 
 ## Solana 程序开发和测试
 
-此项目演示了使用 Surfpool 的核心 Solana 程序开发概念和高级测试技术。
+此项目演示了核心 Solana 程序开发概念和使用 Surfpool 的高级测试技术。
 
 ### 程序结构
 
 - **Rust 程序**: `programs/solbank/src/lib.rs` 中的核心银行逻辑
-- **TypeScript 测试**: `tests/solbank.ts` 中的客户端测试
+- **TypeScript 测试**: `tests/solbank.ts` 中的客户端侧测试
 - **实用脚本**: `scripts/` 中的开发助手
 
 ### 使用 Surfpool 测试
 
-Surfpool 提供了一个与 Solana 兼容的本地网络，具有高级测试功能：
+Surfpool 提供了一个本地 Solana 兼容网络，具有高级测试功能：
 
 #### 启动 Surfpool
 ```bash
 surfpool start
 ```
-这创建了一个模仿主网行为的本地网络，包括自动程序部署。
+这创建了一个本地网络，模拟主网行为，包括自动程序部署。
 
 #### 账户数据操作
 
@@ -152,7 +173,7 @@ await connection._rpcRequest('surfnet_setAccount', [
   },
 ]);
 ```
-*查看 `scripts/setup-usdt-account.ts` 了解代币账户创建示例*
+*参见 `scripts/setup-usdt-account.ts` 了解代币账户创建示例*
 
 **设置代币账户余额：**
 ```typescript
@@ -163,7 +184,7 @@ await connection._rpcRequest('surfnet_setTokenAccount', [
   TOKEN_PROGRAM_ID.toString(),
 ]);
 ```
-*查看 `scripts/setup-usdt-balance.ts` 了解实现*
+*参见 `scripts/setup-usdt-balance.ts` 了解实现*
 
 #### 时间旅行
 
@@ -183,7 +204,7 @@ await connection._rpcRequest('surfnet_resumeClock', []);
 ### 开发工作流
 
 1. **本地开发：**
-   - 启动 Surfpool 以进行真实测试
+   - 启动 Surfpool 进行现实测试
    - 使用脚本进行账户设置和代币操作
    - 使用时间旅行测试冷却机制
 
@@ -199,18 +220,18 @@ await connection._rpcRequest('surfnet_resumeClock', []);
 
 ### 高级功能
 
-- **基于 Slot 的逻辑**: 使用 `Clock::get()` 进行时间相关操作
+- **基于 Slot 的逻辑**: 使用 `Clock::get()` 进行时间相关的操作
 - **PDA 派生**: 使用程序派生地址进行安全账户创建
 - **跨程序调用**: SPL 代币程序集成
 - **错误处理**: 用户友好的自定义错误代码
 
 ### 最佳实践
 
-- 始终使用 Surfpool 进行类似生产环境的测试
-- 使用 cheatcode 设置复杂的测试场景
-- 使用 slot 而非时间戳实现基于时间的限制
+- 始终使用 Surfpool 进行生产类似的测试
+- 使用 cheatcode 为设置复杂测试场景
+- 使用基于 slot 的时间限制而非时间戳
 - 验证所有账户所有权和权限
-- 使用账户操作工具测试边界情况
+- 使用账户操作工具测试边缘情况
 
 ## 许可证
 
